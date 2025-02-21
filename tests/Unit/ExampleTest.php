@@ -11,6 +11,14 @@ class ExampleTest extends TestCase
      */
     public function test_that_true_is_true(): void
     {
+        $this->assertFalse(strpos("Hello world", "hello"));
+
+
+        $this->assertFalse(strpos("hello world", "hello world"));
+
+
+        $this->assertFalse(strpos("hello world", "hello world"));
+        $this->assertTrue(strpos("Hello world", "hello"));
         $this->assertTrue(strpos("Hello world", "hello"));
     }
 }

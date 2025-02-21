@@ -1,0 +1,37 @@
+name: Laravel CI
+
+on:
+  push:
+    branches:
+      - main # 変更を監視するブランチ
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4.2.0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2' # PHPのバージョンを指定
+          extensions: mbstring, pdo, pdo_mysql, pdo_sqlite, xml, ctype, fileinfo
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Copy .env file
+        run: cp .env.example .env
+
+      - name: Generate application key
+        run: php artisan key:generate
+
+      - name: Run Database Migrations
+        run: php artisan migrate --force
+
+      - name: Run Tests
+        run: php artisan test
